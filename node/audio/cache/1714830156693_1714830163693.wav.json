@@ -1,0 +1,53 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "The key to a perfect family vacation, separate rooms.",
+    "words": [
+        {
+            "word": "The",
+            "start": 1.600000023841858,
+            "end": 2.440000057220459
+        },
+        {
+            "word": "key",
+            "start": 2.440000057220459,
+            "end": 2.740000009536743
+        },
+        {
+            "word": "to",
+            "start": 2.740000009536743,
+            "end": 3.0199999809265137
+        },
+        {
+            "word": "a",
+            "start": 3.0199999809265137,
+            "end": 3.5
+        },
+        {
+            "word": "perfect",
+            "start": 3.5,
+            "end": 3.5
+        },
+        {
+            "word": "family",
+            "start": 3.5,
+            "end": 3.8399999141693115
+        },
+        {
+            "word": "vacation",
+            "start": 3.8399999141693115,
+            "end": 4.400000095367432
+        },
+        {
+            "word": "separate",
+            "start": 6.059999942779541,
+            "end": 6.380000114440918
+        },
+        {
+            "word": "rooms",
+            "start": 6.380000114440918,
+            "end": 6.800000190734863
+        }
+    ]
+}

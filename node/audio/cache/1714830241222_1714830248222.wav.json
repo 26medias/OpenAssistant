@@ -1,0 +1,73 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "Dinner With The Parents, new series premieres Thursday, May 16th, only on Showcase.",
+    "words": [
+        {
+            "word": "Dinner",
+            "start": 0.5600000023841858,
+            "end": 1.2400000095367432
+        },
+        {
+            "word": "With",
+            "start": 1.2400000095367432,
+            "end": 1.4800000190734863
+        },
+        {
+            "word": "The",
+            "start": 1.4800000190734863,
+            "end": 1.7799999713897705
+        },
+        {
+            "word": "Parents",
+            "start": 1.7799999713897705,
+            "end": 2.2799999713897705
+        },
+        {
+            "word": "new",
+            "start": 2.700000047683716,
+            "end": 2.9000000953674316
+        },
+        {
+            "word": "series",
+            "start": 2.9000000953674316,
+            "end": 3.240000009536743
+        },
+        {
+            "word": "premieres",
+            "start": 3.240000009536743,
+            "end": 3.859999895095825
+        },
+        {
+            "word": "Thursday",
+            "start": 3.859999895095825,
+            "end": 4.059999942779541
+        },
+        {
+            "word": "May",
+            "start": 4.340000152587891,
+            "end": 4.340000152587891
+        },
+        {
+            "word": "16th",
+            "start": 4.340000152587891,
+            "end": 5.5
+        },
+        {
+            "word": "only",
+            "start": 5.5,
+            "end": 5.579999923706055
+        },
+        {
+            "word": "on",
+            "start": 5.579999923706055,
+            "end": 6.019999980926514
+        },
+        {
+            "word": "Showcase",
+            "start": 6.019999980926514,
+            "end": 6.539999961853027
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "The difference a day makes.",
+    "words": [
+        {
+            "word": "The",
+            "start": 0,
+            "end": 0.6600000262260437
+        },
+        {
+            "word": "difference",
+            "start": 0.6600000262260437,
+            "end": 0.6600000262260437
+        },
+        {
+            "word": "a",
+            "start": 0.6600000262260437,
+            "end": 1.7000000476837158
+        },
+        {
+            "word": "day",
+            "start": 1.7000000476837158,
+            "end": 2.0799999237060547
+        },
+        {
+            "word": "makes",
+            "start": 2.0799999237060547,
+            "end": 2.7200000286102295
+        }
+    ]
+}

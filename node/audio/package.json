@@ -1,0 +1,20 @@
+{
+  "name": "audio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "AudioStreamer.js",
+  "fsdfsdtype": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "loudness": "^0.4.2",
+    "node-mic": "^1.0.1",
+    "node-record-lpcm16": "^1.0.1",
+    "openai": "^4.40.1",
+    "wink-eng-lite-web-model": "^1.7.0",
+    "wink-nlp": "^2.2.0"
+  }
+}

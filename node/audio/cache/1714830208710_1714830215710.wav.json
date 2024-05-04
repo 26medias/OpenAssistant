@@ -1,0 +1,73 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "Put your weapons down! Put your weapons down! Drop them! Drop them now!",
+    "words": [
+        {
+            "word": "Put",
+            "start": 0,
+            "end": 0
+        },
+        {
+            "word": "your",
+            "start": 0,
+            "end": 0.07999999821186066
+        },
+        {
+            "word": "weapons",
+            "start": 0.07999999821186066,
+            "end": 0.3799999952316284
+        },
+        {
+            "word": "down",
+            "start": 0.3799999952316284,
+            "end": 0.8399999737739563
+        },
+        {
+            "word": "Put",
+            "start": 1.4600000381469727,
+            "end": 1.7400000095367432
+        },
+        {
+            "word": "your",
+            "start": 1.7400000095367432,
+            "end": 1.899999976158142
+        },
+        {
+            "word": "weapons",
+            "start": 1.899999976158142,
+            "end": 2.180000066757202
+        },
+        {
+            "word": "down",
+            "start": 2.180000066757202,
+            "end": 2.559999942779541
+        },
+        {
+            "word": "Drop",
+            "start": 3.0399999618530273,
+            "end": 3.259999990463257
+        },
+        {
+            "word": "them",
+            "start": 3.259999990463257,
+            "end": 3.680000066757202
+        },
+        {
+            "word": "Drop",
+            "start": 4.940000057220459,
+            "end": 5.260000228881836
+        },
+        {
+            "word": "them",
+            "start": 5.260000228881836,
+            "end": 5.5
+        },
+        {
+            "word": "now",
+            "start": 5.5,
+            "end": 5.820000171661377
+        }
+    ]
+}

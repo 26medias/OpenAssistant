@@ -1,0 +1,23 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "Shut up, scum!",
+    "words": [
+        {
+            "word": "Shut",
+            "start": 2.140000104904175,
+            "end": 3.0199999809265137
+        },
+        {
+            "word": "up",
+            "start": 3.0199999809265137,
+            "end": 3.440000057220459
+        },
+        {
+            "word": "scum",
+            "start": 5.099999904632568,
+            "end": 5.539999961853027
+        }
+    ]
+}
