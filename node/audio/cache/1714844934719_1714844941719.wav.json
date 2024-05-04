@@ -1,0 +1,23 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 6.820000171661377,
+    "text": "We'd be honored.",
+    "words": [
+        {
+            "word": "We'd",
+            "start": 5.960000038146973,
+            "end": 6.480000019073486
+        },
+        {
+            "word": "be",
+            "start": 6.480000019073486,
+            "end": 6.739999771118164
+        },
+        {
+            "word": "honored",
+            "start": 6.739999771118164,
+            "end": 6.800000190734863
+        }
+    ]
+}

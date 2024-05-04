@@ -13,36 +13,55 @@ class ContinuousChunkTranscription {
         this.trimEnd = options.trimEnd;
         this.silenceThresholdMs = options.silenceThresholdMs;
         this.onCommand = options.onCommand;
-        this.lastWordEndTime = 0; // Track end time of the last word processed
+        this.lastWordEndTime = 0; // Track end time of the last word processed in milliseconds
         this.currentSentence = '';
+    }
+
+    displayTs(ts) {
+        const d = new Date(ts)
+        return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}]`
     }
 
     async processNext(filename) {
         const transcription = await this._transcribe(filename);
-        const editedTranscript = this.editor.edit(transcription, [this.trimStart, this.trimEnd]);
-
-        // Process silence between words within the transcription and between transcriptions
+        const { start, end } = this._parseFilename(filename); // Ensure these are epoch times in milliseconds
+    
+        if (transcription.words.length === 0) {
+            this.transcripts.push('[silence]');
+            return '[silence]';
+        }
+    
+        //console.log("-----------")
+        //console.log(filename);
+        //console.log('');
         transcription.words.forEach((word, index) => {
-            const silenceDuration = index === 0 ? word.start - this.lastWordEndTime : word.start - transcription.words[index - 1].end;
-            // Check if the silence duration exceeds the threshold
+            let wordStartTimeMs = start + (word.start * 1000); // Correctly calculating word start time
+            let wordEndTimeMs = start + (word.end * 1000); // Correctly calculating word end time
+    
+            /*let silenceDuration = index === 0
+                ? (wordStartTimeMs - this.lastWordEndTime) // Silence between files
+                : (wordStartTimeMs - transcription.words[index - 1].end * 1000 + start); // Silence within the file*/
+            
+            let silenceDuration = (!this.lastWordEndTime ? 0 : wordStartTimeMs - this.lastWordEndTime)/1000;
+
+            //console.log("# ", word.word, '      \t', this.displayTs(wordStartTimeMs), silenceDuration, `  \t|> ${wordStartTimeMs} - ${this.lastWordEndTime}`)
+    
             if (silenceDuration > this.silenceThresholdMs && this.currentSentence) {
                 this.onCommand(this.currentSentence.trim(), silenceDuration);
                 this.currentSentence = '';
             }
-
-            // Append the current word to the current sentence
+    
             this.currentSentence += ` ${word.word}`;
+            this.lastWordEndTime = wordEndTimeMs; // Update for next word or next file
         });
-
-        if (transcription.words.length==0) {
-            this.transcripts.push('[silence]');
-            return '[silence]';
-        }
-        this.transcripts.push(editedTranscript);
-        this.lastWordEndTime = transcription.words[transcription.words.length - 1].end;
-
-        return editedTranscript;
+    
+        this.transcripts.push(this.currentSentence.trim());
+        this.currentSentence = ''; // Reset for next usage
+        return this.currentSentence;
     }
+    
+    
+    
 
     getTranscription() {
         // Final call to onCommand for any remaining text in currentSentence
@@ -63,7 +82,6 @@ class ContinuousChunkTranscription {
         const cacheDir = path.join(__dirname, 'cache');
         const cachePath = path.join(cacheDir, `${path.basename(filename)}.json`);
 
-        // Check for cached data
         if (fs.existsSync(cachePath)) {
             return JSON.parse(fs.readFileSync(cachePath, 'utf8'));
         } else {
@@ -75,12 +93,10 @@ class ContinuousChunkTranscription {
                 timestamp_granularities: ["word"]
             });
 
-            // Create cache directory if it does not exist
             if (!fs.existsSync(cacheDir)) {
                 fs.mkdirSync(cacheDir);
             }
 
-            // Cache the API response
             fs.writeFileSync(cachePath, JSON.stringify(transcription), 'utf8');
 
             return transcription;
@@ -91,15 +107,14 @@ class ContinuousChunkTranscription {
         const pattern = /(\d+)_(\d+).wav$/;
         const match = filename.match(pattern);
         return {
-            start: parseInt(match[1], 10),
+            start: parseInt(match[1], 10), // Assuming these are milliseconds
             end: parseInt(match[2], 10)
         };
-    }
+    }    
 }
 
 
-
-
+/*
 (async () => {
     const tr = new ContinuousChunkTranscription({
         model: 'whisper-1',
@@ -111,7 +126,7 @@ class ContinuousChunkTranscription {
         }
     });
 
-    const audioDir = path.join(__dirname, 'audio2');
+    const audioDir = path.join(__dirname, 'audio5');
     // Read all files from the audio directory
     const files = fs.readdirSync(audioDir).sort();
 
@@ -128,5 +143,7 @@ class ContinuousChunkTranscription {
     console.log("------");
     console.log(tr.getTranscription());
 })()
+*/
+
 
 module.exports = ContinuousChunkTranscription;

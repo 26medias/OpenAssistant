@@ -1,0 +1,43 @@
+{
+    "task": "transcribe",
+    "language": "nynorsk",
+    "duration": 5.880000114440918,
+    "text": "Thank you for watching. Always be happy.",
+    "words": [
+        {
+            "word": "Thank",
+            "start": 0,
+            "end": 5.820000171661377
+        },
+        {
+            "word": "you",
+            "start": 5.820000171661377,
+            "end": 5.820000171661377
+        },
+        {
+            "word": "for",
+            "start": 5.820000171661377,
+            "end": 5.820000171661377
+        },
+        {
+            "word": "watching",
+            "start": 5.820000171661377,
+            "end": 5.820000171661377
+        },
+        {
+            "word": "Always",
+            "start": 5.820000171661377,
+            "end": 5.860000133514404
+        },
+        {
+            "word": "be",
+            "start": 5.860000133514404,
+            "end": 5.860000133514404
+        },
+        {
+            "word": "happy",
+            "start": 5.860000133514404,
+            "end": 5.860000133514404
+        }
+    ]
+}
