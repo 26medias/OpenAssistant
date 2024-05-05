@@ -1,0 +1,18 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 3.9100000858306885,
+    "text": "Boopie. Hehehe.",
+    "words": [
+        {
+            "word": "Boopie",
+            "start": 0,
+            "end": 1.6799999475479126
+        },
+        {
+            "word": "Hehehe",
+            "start": 2.4800000190734863,
+            "end": 3.4600000381469727
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 4.769999980926514,
+    "text": "You mean the radio spots and that dolphin for your inauguration?",
+    "words": [
+        {
+            "word": "You",
+            "start": 0,
+            "end": 0
+        },
+        {
+            "word": "mean",
+            "start": 0,
+            "end": 0.18000000715255737
+        },
+        {
+            "word": "the",
+            "start": 0.18000000715255737,
+            "end": 0.4000000059604645
+        },
+        {
+            "word": "radio",
+            "start": 0.4000000059604645,
+            "end": 0.6600000262260437
+        },
+        {
+            "word": "spots",
+            "start": 0.6600000262260437,
+            "end": 1.100000023841858
+        },
+        {
+            "word": "and",
+            "start": 1.100000023841858,
+            "end": 1.600000023841858
+        },
+        {
+            "word": "that",
+            "start": 1.600000023841858,
+            "end": 1.8799999952316284
+        },
+        {
+            "word": "dolphin",
+            "start": 1.8799999952316284,
+            "end": 2.240000009536743
+        },
+        {
+            "word": "for",
+            "start": 2.240000009536743,
+            "end": 2.559999942779541
+        },
+        {
+            "word": "your",
+            "start": 2.559999942779541,
+            "end": 2.6600000858306885
+        },
+        {
+            "word": "inauguration",
+            "start": 2.6600000858306885,
+            "end": 3.200000047683716
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 4.769999980926514,
+    "text": "Our children's test scores have been dropping at an alarming rate.",
+    "words": [
+        {
+            "word": "Our",
+            "start": 1.7599999904632568,
+            "end": 2.359999895095825
+        },
+        {
+            "word": "children's",
+            "start": 2.359999895095825,
+            "end": 2.799999952316284
+        },
+        {
+            "word": "test",
+            "start": 2.799999952316284,
+            "end": 3.0999999046325684
+        },
+        {
+            "word": "scores",
+            "start": 3.0999999046325684,
+            "end": 3.3399999141693115
+        },
+        {
+            "word": "have",
+            "start": 3.3399999141693115,
+            "end": 3.559999942779541
+        },
+        {
+            "word": "been",
+            "start": 3.559999942779541,
+            "end": 4.019999980926514
+        },
+        {
+            "word": "dropping",
+            "start": 4.019999980926514,
+            "end": 4.019999980926514
+        },
+        {
+            "word": "at",
+            "start": 4.019999980926514,
+            "end": 4.320000171661377
+        },
+        {
+            "word": "an",
+            "start": 4.320000171661377,
+            "end": 4.5
+        },
+        {
+            "word": "alarming",
+            "start": 4.5,
+            "end": 4.739999771118164
+        },
+        {
+            "word": "rate",
+            "start": 4.739999771118164,
+            "end": 4.739999771118164
+        }
+    ]
+}

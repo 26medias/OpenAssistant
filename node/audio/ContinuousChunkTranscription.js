@@ -6,6 +6,7 @@ const TranscriptionEditor = require('./TranscriptionEditor');
 class ContinuousChunkTranscription {
     constructor(options) {
         this.openai = new OpenAI.OpenAI();
+        this.live = options.live;
         this.model = options.model;
         this.editor = new TranscriptionEditor();
         this.transcripts = [];
@@ -15,6 +16,7 @@ class ContinuousChunkTranscription {
         this.onCommand = options.onCommand;
         this.lastWordEndTime = 0; // Track end time of the last word processed in milliseconds
         this.currentSentence = '';
+        this.reset();
     }
 
     displayTs(ts) {
@@ -22,50 +24,88 @@ class ContinuousChunkTranscription {
         return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}]`
     }
 
+
+    /*
+        Logic:
+            start:
+                currentSentence = ''
+            processNext:
+                if has silence:
+                    if curr_break_cue: // not first break in this transcription
+                        currentSentence += transcription[curr_break_cue:word.start-0.01] // Get relevant slice
+                        onCommand(currentSentence)
+                        currentSentence = ''
+                        curr_break_cue = word.start-0.01
+                    else: // first break in this transcription
+                        currentSentence += transcription[:word.start-0.01]
+                        onCommand(currentSentence)
+                        currentSentence = ''
+                        curr_break_cue = word.start-0.01
+                else:
+                    currentSentence += transcription
+    */
+
     async processNext(filename) {
         const transcription = await this._transcribe(filename, this.previousTranscription);
         const { start, end } = this._parseFilename(filename); // Ensure these are epoch times in milliseconds
 
         if (transcription.words.length === 0) {
             this.transcripts.push('[silence]');
+            if (this.live) {
+                // Live transcription, check if there's a breaking silence
+                let silenceDuration = new Date().getTime() - this.lastWordEndTime;
+                if (silenceDuration > this.silenceThresholdMs) {
+                    this.onCommand(this.currentSentence, silenceDuration)
+                    this.currentSentence = ''
+                }
+            }
             return '[silence]';
         }
 
         this.trimIndex = 0; //this.trimStart;
-        let lastTriggeredCue = null;
+        let curr_break_cue = null;
     
         const editedTranscript = transcription.text;//this.editor.edit(transcription, [this.trimStart, this.trimEnd]);
         this.previousTranscription = editedTranscript; 
 
-        console.log('----------------------------')
-        console.log(filename)
-        console.log('')
+        //console.log('----------------------------')
 
         transcription.words.forEach((word, index) => {
-            let wordStartTimeMs = start + (word.start * 1000); // Correctly calculating word start time
-            let wordEndTimeMs = start + (word.end * 1000); // Correctly calculating word end time
+            let wordStartTimeMs = start + (word.start * 1000);
+            let wordEndTimeMs = start + (word.end * 1000);
     
             let silenceDuration = (!this.lastWordEndTime ? 0 : wordStartTimeMs - this.lastWordEndTime)/1000;
 
-            console.log("> ", this.displayTs(wordStartTimeMs), word.word, '   \t', silenceDuration, '   \t')
-
-            //this.currentSentence += ` ${word.word}`;
+            //console.log("> ", this.displayTs(wordStartTimeMs), silenceDuration.toFixed(2), '   \t', word.word, '   \t')
 
             if (silenceDuration >= this.silenceThresholdMs) {
-                this.currentSentence += this.editor.edit(transcription, [this.trimIndex, word.end]);
-                lastTriggeredCue = word.end;
-                this.trimIndex = word.end;
-                this.onCommand(this.currentSentence, silenceDuration);
-                this.currentSentence = '';
+                if (curr_break_cue) {
+                    // not first break in this transcription
+                    const transcriptionSlice = this.editor.edit(transcription, [curr_break_cue, word.start-0.01]);
+                    this.currentSentence += transcriptionSlice;
+                    this.onCommand(this.currentSentence, silenceDuration)
+                    this.currentSentence = ''
+                    curr_break_cue = word.start-0.01
+                } else {
+                    // first break in this transcription
+                    const transcriptionSlice = this.editor.edit(transcription, [0, word.start-0.01]);
+                    this.currentSentence += transcriptionSlice;
+                    this.onCommand(this.currentSentence, silenceDuration)
+                    this.currentSentence = ''
+                    curr_break_cue = word.start-0.01
+                }
             }
 
             this.lastWordEndTime = wordEndTimeMs; // Update for next word or next file
         });
 
-        if (lastTriggeredCue) {
-            this.currentSentence += this.editor.edit(transcription, [lastTriggeredCue, this.trimEnd]);
+        if (!curr_break_cue) {
+            //console.log('[[ NO BREAK IN FILE ]]')
+            this.currentSentence += editedTranscript
         } else {
-            this.currentSentence += editedTranscript;
+            const transcriptionSlice = this.editor.edit(transcription, [curr_break_cue, 10000000]);
+            //console.log(`[[ SAVE: ${transcriptionSlice} ]]`)
+            this.currentSentence += transcriptionSlice;
         }
     
         this.transcripts.push(editedTranscript);
@@ -77,10 +117,10 @@ class ContinuousChunkTranscription {
 
     getTranscription() {
         // Final call to onCommand for any remaining text in currentSentence
-        if (this.currentSentence.trim()) {
+        /*if (this.currentSentence.trim()) {
             this.onCommand(this.currentSentence.trim(), -1);
             this.currentSentence = '';
-        }
+        }*/
         return this.transcripts.join(' ');
     }
 
@@ -101,7 +141,7 @@ class ContinuousChunkTranscription {
             const transcription = await this.openai.audio.transcriptions.create({
                 file: fileStream,
                 model: this.model,
-                prompt: previousTranscription,
+                prompt: `previous transcription: ${previousTranscription}`,
                 language: 'en',
                 response_format: "verbose_json",
                 timestamp_granularities: ["word"]

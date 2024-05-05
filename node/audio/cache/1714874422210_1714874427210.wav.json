@@ -1,0 +1,13 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 4.769999980926514,
+    "text": "What?",
+    "words": [
+        {
+            "word": "What",
+            "start": 0,
+            "end": 4.739999771118164
+        }
+    ]
+}

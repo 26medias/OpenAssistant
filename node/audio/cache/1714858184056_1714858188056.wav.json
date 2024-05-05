@@ -1,0 +1,73 @@
+{
+    "task": "transcribe",
+    "language": "english",
+    "duration": 3.7300000190734863,
+    "text": "A black hole? A wormhole or something? A black hole and a wormhole.",
+    "words": [
+        {
+            "word": "A",
+            "start": 0.10000000149011612,
+            "end": 0.5
+        },
+        {
+            "word": "black",
+            "start": 0.5,
+            "end": 0.5
+        },
+        {
+            "word": "hole",
+            "start": 0.5,
+            "end": 0.699999988079071
+        },
+        {
+            "word": "A",
+            "start": 0.8399999737739563,
+            "end": 0.9200000166893005
+        },
+        {
+            "word": "wormhole",
+            "start": 0.9200000166893005,
+            "end": 1.3200000524520874
+        },
+        {
+            "word": "or",
+            "start": 1.3200000524520874,
+            "end": 1.5
+        },
+        {
+            "word": "something",
+            "start": 1.5,
+            "end": 1.9800000190734863
+        },
+        {
+            "word": "A",
+            "start": 2.7799999713897705,
+            "end": 2.819999933242798
+        },
+        {
+            "word": "black",
+            "start": 2.819999933242798,
+            "end": 3.299999952316284
+        },
+        {
+            "word": "hole",
+            "start": 3.299999952316284,
+            "end": 3.3399999141693115
+        },
+        {
+            "word": "and",
+            "start": 3.3399999141693115,
+            "end": 3.640000104904175
+        },
+        {
+            "word": "a",
+            "start": 3.640000104904175,
+            "end": 3.700000047683716
+        },
+        {
+            "word": "wormhole",
+            "start": 3.700000047683716,
+            "end": 3.700000047683716
+        }
+    ]
+}

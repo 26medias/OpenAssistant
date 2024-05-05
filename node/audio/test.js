@@ -5,9 +5,9 @@ const ContinuousChunkTranscription = require("./ContinuousChunkTranscription");
 
 const config = {
     chunk: 5,
-    trim: 0.1,
-    silence: 1,
-    dir: 'audio10/'
+    trim: 0.02,
+    silence: 0.3,
+    dir: 'audio14/'
 }
 
 function mkdirs(dir) {
@@ -33,15 +33,16 @@ const tr = new ContinuousChunkTranscription({
     trimStart: config.trim,
     trimEnd: config.chunk-config.trim,
     silenceThresholdMs: config.silence,
+    live: true,
     onCommand: function(text, silenceDuration) {
-        console.log('>> ['+silenceDuration+']', text)
+        console.log('>> ['+silenceDuration.toFixed(2)+']', text)
     }
 });
 
 const rec = new ContinuousChunkRecorder({
     dir: config.dir,
     chunkLengthMs: config.chunk*1000,
-    marginMs: (config.trim*2+0.2)*1000,
+    marginMs: (config.trim*2)*1000,
     onChunk: async function(filename, startTime, endTime) {
         //console.log({filename, startTime, endTime})
         const result = await tr.processNext(filename);
