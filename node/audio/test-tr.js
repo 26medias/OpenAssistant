@@ -5,9 +5,9 @@ const ContinuousChunkTranscription = require("./ContinuousChunkTranscription");
 
 const config = {
     chunk: 4,
-    trim: 0.1,
+    trim: 0.05,
     silence: 0.2,
-    dir: 'audio7'
+    dir: 'audio10'
 }
 
 const testTranscription = async () => {
@@ -17,7 +17,7 @@ const testTranscription = async () => {
         trimEnd: config.chunk-config.trim,
         silenceThresholdMs: config.silence,
         onCommand: function(text, silenceDuration) {
-            console.log('>> ['+silenceDuration+']', text)
+            console.log('>> ['+silenceDuration+']', text, '\n')
         }
     });
 
@@ -31,7 +31,7 @@ const testTranscription = async () => {
             const fullPath = path.join(audioDir, file);
             //console.log(`Processing ${file}...`);
             const result = await tr.processNext(fullPath);
-            //console.log("out:", result);
+            console.log("out:", result);
         }
     }
 

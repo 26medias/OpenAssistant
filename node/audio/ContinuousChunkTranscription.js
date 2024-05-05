@@ -19,45 +19,57 @@ class ContinuousChunkTranscription {
 
     displayTs(ts) {
         const d = new Date(ts)
-        return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}]`
+        return `[${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}]`
     }
 
     async processNext(filename) {
-        const transcription = await this._transcribe(filename);
+        const transcription = await this._transcribe(filename, this.previousTranscription);
         const { start, end } = this._parseFilename(filename); // Ensure these are epoch times in milliseconds
-    
+
         if (transcription.words.length === 0) {
             this.transcripts.push('[silence]');
             return '[silence]';
         }
+
+        this.trimIndex = 0; //this.trimStart;
+        let lastTriggeredCue = null;
     
-        //console.log("-----------")
-        //console.log(filename);
-        //console.log('');
+        const editedTranscript = transcription.text;//this.editor.edit(transcription, [this.trimStart, this.trimEnd]);
+        this.previousTranscription = editedTranscript; 
+
+        console.log('----------------------------')
+        console.log(filename)
+        console.log('')
+
         transcription.words.forEach((word, index) => {
             let wordStartTimeMs = start + (word.start * 1000); // Correctly calculating word start time
             let wordEndTimeMs = start + (word.end * 1000); // Correctly calculating word end time
     
-            /*let silenceDuration = index === 0
-                ? (wordStartTimeMs - this.lastWordEndTime) // Silence between files
-                : (wordStartTimeMs - transcription.words[index - 1].end * 1000 + start); // Silence within the file*/
-            
             let silenceDuration = (!this.lastWordEndTime ? 0 : wordStartTimeMs - this.lastWordEndTime)/1000;
 
-            //console.log("# ", word.word, '      \t', this.displayTs(wordStartTimeMs), silenceDuration, `  \t|> ${wordStartTimeMs} - ${this.lastWordEndTime}`)
-    
-            if (silenceDuration > this.silenceThresholdMs && this.currentSentence) {
-                this.onCommand(this.currentSentence.trim(), silenceDuration);
+            console.log("> ", this.displayTs(wordStartTimeMs), word.word, '   \t', silenceDuration, '   \t')
+
+            //this.currentSentence += ` ${word.word}`;
+
+            if (silenceDuration >= this.silenceThresholdMs) {
+                this.currentSentence += this.editor.edit(transcription, [this.trimIndex, word.end]);
+                lastTriggeredCue = word.end;
+                this.trimIndex = word.end;
+                this.onCommand(this.currentSentence, silenceDuration);
                 this.currentSentence = '';
             }
-    
-            this.currentSentence += ` ${word.word}`;
+
             this.lastWordEndTime = wordEndTimeMs; // Update for next word or next file
         });
+
+        if (lastTriggeredCue) {
+            this.currentSentence += this.editor.edit(transcription, [lastTriggeredCue, this.trimEnd]);
+        } else {
+            this.currentSentence += editedTranscript;
+        }
     
-        this.transcripts.push(this.currentSentence.trim());
-        this.currentSentence = ''; // Reset for next usage
-        return this.currentSentence;
+        this.transcripts.push(editedTranscript);
+        return editedTranscript;
     }
     
     
@@ -78,7 +90,7 @@ class ContinuousChunkTranscription {
         this.lastWordEndTime = 0;
     }
 
-    async _transcribe(filename) {
+    async _transcribe(filename, previousTranscription) {
         const cacheDir = path.join(__dirname, 'cache');
         const cachePath = path.join(cacheDir, `${path.basename(filename)}.json`);
 
@@ -89,6 +101,8 @@ class ContinuousChunkTranscription {
             const transcription = await this.openai.audio.transcriptions.create({
                 file: fileStream,
                 model: this.model,
+                prompt: previousTranscription,
+                language: 'en',
                 response_format: "verbose_json",
                 timestamp_granularities: ["word"]
             });
@@ -97,7 +111,7 @@ class ContinuousChunkTranscription {
                 fs.mkdirSync(cacheDir);
             }
 
-            fs.writeFileSync(cachePath, JSON.stringify(transcription), 'utf8');
+            fs.writeFileSync(cachePath, JSON.stringify(transcription, null, 4), 'utf8');
 
             return transcription;
         }
@@ -112,38 +126,5 @@ class ContinuousChunkTranscription {
         };
     }    
 }
-
-
-/*
-(async () => {
-    const tr = new ContinuousChunkTranscription({
-        model: 'whisper-1',
-        trimStart: 0.1,
-        trimEnd: 6.9,
-        silenceThresholdMs: 0.3,
-        onCommand: function(text, silenceDuration) {
-            console.log('>> ['+silenceDuration+']', text)
-        }
-    });
-
-    const audioDir = path.join(__dirname, 'audio5');
-    // Read all files from the audio directory
-    const files = fs.readdirSync(audioDir).sort();
-
-    // Process each file in order
-    for (const file of files) {
-        if (path.extname(file) === '.wav') { // Make sure to process only .wav files
-            const fullPath = path.join(audioDir, file);
-            //console.log(`Processing ${file}...`);
-            const result = await tr.processNext(fullPath);
-            //console.log("out:", result);
-        }
-    }
-
-    console.log("------");
-    console.log(tr.getTranscription());
-})()
-*/
-
 
 module.exports = ContinuousChunkTranscription;
